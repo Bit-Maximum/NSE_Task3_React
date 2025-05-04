@@ -29,9 +29,7 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "install": "npm install @mui/material @emotion/react @emotion/styled @mui/icons-material",
-    "install2": "npm install react-router-dom @mui/x-data-grid",
-    "install3": "npm install @mui/x-charts"
+    "install": "npm install @mui/material @emotion/react @emotion/styled @mui/icons-material react-router-dom @mui/x-data-grid @mui/x-charts"
   },
   "eslintConfig": {
     "extends": [
