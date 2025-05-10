@@ -1,7 +1,7 @@
 import Navbar from "../components/Navbar";
 import GroupGrid from "./components/GroupGrid";
 
-import {categories, cities, vitality, employees} from "./groupdata";
+import {tGroup} from "./groupdata";
 
 import * as React from "react";
 import FormControl from "@mui/material/FormControl";
@@ -10,26 +10,40 @@ import Select, { SelectChangeEvent } from '@mui/material/Select';
 import MenuItem from "@mui/material/MenuItem";
 import Box from "@mui/material/Box";
 import GroupChart from "./components/GroupChart";
-import SettingChart from "./components/SettingChart";
 
 type tSelect = "Категория" | "Город" | "Срок хранения" | "Продавец";
 
-const dataMap = {
-    "Категория": categories,
-    "Город": cities,
-    "Срок хранения": vitality,
-    "Продавец": employees,
+const urlMap: Record<tSelect, string> = {
+    "Категория": "http://127.0.0.1:5000/api/v1/products/stats/category",
+    "Город": "http://127.0.0.1:5000/api/v1/products/stats/city",
+    "Срок хранения": "http://127.0.0.1:5000/api/v1/products/stats/vitality",
+    "Продавец": "http://127.0.0.1:5000/api/v1/products/stats/employee",
 };
 
 function Chart() {
     const [group, setGroup] = React.useState<tSelect>("Категория");
-    const [groupData, setGroupData] = React.useState(categories);
+    const [groupData, setGroupData] = React.useState<tGroup>([]);
+
+    const fetchGroupData = async (selectedGroup: tSelect) => {
+        try {
+            const response = await fetch(urlMap[selectedGroup]);
+            if (response.ok) {
+            const data = await response.json();
+            setGroupData(data.stats);
+            }
+        } catch (error) {
+            console.error("Ошибка загрузки данных:", error);
+        }
+    };
+
+    React.useEffect(() => {
+        fetchGroupData(group);
+    }, [group]);
 
     const handleChange = (event: SelectChangeEvent) => {
         const selectedGroup = event.target.value as tSelect;
         setGroup(selectedGroup);
-        setGroupData(dataMap[selectedGroup]);
-    }
+    };
 
     return (
         <div>
@@ -52,8 +66,10 @@ function Chart() {
                 </FormControl>
             </Box>
 
-            <GroupChart data={groupData}/>
-            <GroupGrid data={groupData}/>
+
+            <GroupChart data={groupData} />
+            <GroupGrid data={groupData} />
+
         </div>
     );
 }
