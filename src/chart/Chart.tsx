@@ -1,8 +1,6 @@
 import Navbar from "../components/Navbar";
 import GroupGrid from "./components/GroupGrid";
-
 import {tGroup} from "./groupdata";
-
 import * as React from "react";
 import FormControl from "@mui/material/FormControl";
 import InputLabel from "@mui/material/InputLabel";
@@ -23,13 +21,15 @@ const urlMap: Record<tSelect, string> = {
 function Chart() {
     const [group, setGroup] = React.useState<tSelect>("Категория");
     const [groupData, setGroupData] = React.useState<tGroup>([]);
+    const [filteredData, setFilteredData] = React.useState<tGroup>([]);
 
     const fetchGroupData = async (selectedGroup: tSelect) => {
         try {
             const response = await fetch(urlMap[selectedGroup]);
             if (response.ok) {
-            const data = await response.json();
-            setGroupData(data.stats);
+                const data = await response.json();
+                setGroupData(data.stats);
+                setFilteredData(data.stats);
             }
         } catch (error) {
             console.error("Ошибка загрузки данных:", error);
@@ -43,6 +43,10 @@ function Chart() {
     const handleChange = (event: SelectChangeEvent) => {
         const selectedGroup = event.target.value as tSelect;
         setGroup(selectedGroup);
+    };
+
+    const handleFilterChange = (newFilteredData: tGroup) => {
+        setFilteredData(newFilteredData);
     };
 
     return (
@@ -67,8 +71,8 @@ function Chart() {
             </Box>
 
 
-            <GroupChart data={groupData} />
-            <GroupGrid data={groupData} />
+            <GroupChart data={filteredData} />
+            <GroupGrid data={groupData} onFilterChange={handleFilterChange} />
 
         </div>
     );
