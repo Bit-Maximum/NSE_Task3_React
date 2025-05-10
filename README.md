@@ -17,13 +17,13 @@ cd NSE_Task3_React
 
 Используя Docker:
 ```bash
-docker build -t nse-task-4:latest .
+docker build -t nse-task-3:latest .
 ```
 
 ### Для запуска контейнера:
 
 ```bash
-docker run -p 3000:3000 nse-task-4:latest
+docker run -p 3000:3000 nse-task-3:latest
 ```
 
 Устанавливая локально:
