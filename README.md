@@ -10,7 +10,7 @@
 
 ```bash
 git clone https://github.com/Bit-Maximum/NSE_Task3_React.git
-cd NSE_Lab4_Multipage
+cd NSE_Task3_React
 ```
 
 ### Установка зависимостей:
